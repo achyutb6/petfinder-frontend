@@ -36,6 +36,7 @@ export class PetComponent implements OnInit {
   public showContactDetails = false;
   public addWishlistItemMessage:string;
   public selectedFile = null;
+  public server : string;
 
 
   constructor(private httpClient: HttpClient, private router: Router) {
@@ -43,6 +44,7 @@ export class PetComponent implements OnInit {
       this.router.navigate['/']
     }
     // this.userId = JSON.parse(sessionStorage.getItem('user')).userId;
+    this.server = "https://petfinder-api-wpl.herokuapp.com";
     this.userId = JSON.parse(sessionStorage.getItem('user')).userId;
     this.isAdmin = JSON.parse(sessionStorage.getItem('user')).isAdmin;
     this.petId = JSON.parse(sessionStorage.getItem('pet')).petId;
@@ -56,7 +58,7 @@ export class PetComponent implements OnInit {
   }
 
   getPetCategories() {
-    this.httpClient.get("http://localhost:3000/api/pet/petCategoriesAll")
+    this.httpClient.get(this.server+"/api/pet/petCategoriesAll")
       .subscribe(
         (data: any[]) => {
           //console.log(data);
@@ -64,7 +66,7 @@ export class PetComponent implements OnInit {
         });
   }
   getPetDetails(value) {
-    this.httpClient.get('http://localhost:3000/api/pet/' + value)
+    this.httpClient.get(this.server+'/api/pet/' + value)
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -97,7 +99,7 @@ export class PetComponent implements OnInit {
   }
 
   updatePet() {
-    this.httpClient.get("http://localhost:3000/api/pet/updatePet/" + this.petName + "/" + this.petBreed + "/" + this.petDesc + "/" + this.petId)
+    this.httpClient.get(this.server+"/api/pet/updatePet/" + this.petName + "/" + this.petBreed + "/" + this.petDesc + "/" + this.petId)
       .subscribe(
         (data: any[]) => {
           // console.log(data);
@@ -110,7 +112,7 @@ export class PetComponent implements OnInit {
   }
 
   getUserDetails(value) {
-    this.httpClient.get("http://localhost:3000/api/users/get/" + this.petUserId)
+    this.httpClient.get(this.server+"/api/users/get/" + this.petUserId)
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -123,7 +125,7 @@ export class PetComponent implements OnInit {
   }
 
   addToWishList() {
-    return this.httpClient.get('http://localhost:3000/api/wishlist/add/' + this.petId + '/' + this.userId)
+    return this.httpClient.get(this.server+'/api/wishlist/add/' + this.petId + '/' + this.userId)
       .subscribe(
         (data: any[]) => {
           console.log(data);
@@ -133,7 +135,7 @@ export class PetComponent implements OnInit {
   }
 
   continuePet(){
-    return this.httpClient.get('http://localhost:3000/api/pet/continue/'+this.petId)
+    return this.httpClient.get(this.server+'/api/pet/continue/'+this.petId)
     .subscribe(
       (data:any[]) => {
         console.log(data);
@@ -143,7 +145,7 @@ export class PetComponent implements OnInit {
   }
 
   discontinuePet(){
-    return this.httpClient.get('http://localhost:3000/api/pet/discontinue/'+this.petId)
+    return this.httpClient.get(this.server+'/api/pet/discontinue/'+this.petId)
     .subscribe(
       (data:any[]) => {
         console.log(data);
@@ -159,7 +161,7 @@ export class PetComponent implements OnInit {
   onUpload(value) {
     var fd = new FormData();
     fd.append('productImage', this.selectedFile, this.selectedFile.name);
-    this.httpClient.post('http://localhost:3000/uploadImage', fd, {
+    this.httpClient.post(this.server+'/uploadImage', fd, {
       reportProgress: true,
       observe: 'events'
     })
@@ -171,7 +173,7 @@ export class PetComponent implements OnInit {
           console.log(value);
           console.log("res.body",res.body);
           var imgPath = res.body["destination"] + res.body["filename"];
-          return this.httpClient.post('http://localhost:3000/api/setImage', { imgPath, value })
+          return this.httpClient.post(this.server+'/api/setImage', { imgPath, value })
             .subscribe(
               (data: any[]) => {
                 console.log(data);

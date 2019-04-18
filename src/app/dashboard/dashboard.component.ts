@@ -58,11 +58,13 @@ export class DashboardComponent implements OnInit {
   addPetForm: FormGroup;
   public addPetMessage:string ;
   public addWishlistItemMessage:string;
+  public server : string;
 
   constructor(private httpClient: HttpClient, private pagerService: PagerService, private router: Router, private location: Location, private fb: FormBuilder) {
 
     // console.log(sessionStorage);
     this.searchString = "";
+    this.server = "https://petfinder-api-wpl.herokuapp.com";
     this.emailIdChangedMessage = "";
     this.phoneNoChangedMessage = "";
     this.addressChangedMessage = "";
@@ -98,7 +100,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getUserDetails(value) {
-    return this.httpClient.get("http://localhost:3000/api/users/get/" + value)
+    return this.httpClient.get(this.server+"/api/users/get/" + value)
       .subscribe(
         (data: any[]) => {
           // console.log(data[0]);
@@ -118,7 +120,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllPetCategories() {
-    return this.httpClient.get("http://localhost:3000/api/pet/petCategoriesAll")
+    return this.httpClient.get(this.server+"/api/pet/petCategoriesAll")
       .subscribe(
         (data: any[]) => {
           //console.log(data);
@@ -128,7 +130,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getAllUsers() {
-    return this.httpClient.get("http://localhost:3000/api/users/usersListAll")
+    return this.httpClient.get(this.server+"/api/users/usersListAll")
       .subscribe(
         (data: any[]) => {
           // console.log(data);
@@ -169,7 +171,7 @@ export class DashboardComponent implements OnInit {
   onUpload(value) {
     var fd = new FormData();
     fd.append('productImage', this.selectedFile, this.selectedFile.name);
-    this.httpClient.post('http://localhost:3000/uploadImage', fd, {
+    this.httpClient.post(this.server+'/uploadImage', fd, {
       reportProgress: true,
       observe: 'events'
     })
@@ -181,7 +183,7 @@ export class DashboardComponent implements OnInit {
           console.log(value);
           console.log("res.body",res.body);
           var imgPath = res.body["destination"] + res.body["filename"];
-          return this.httpClient.post('http://localhost:3000/api/setImage', { imgPath, value })
+          return this.httpClient.post(this.server+'/api/setImage', { imgPath, value })
             .subscribe(
               (data: any[]) => {
                 console.log(data);
@@ -196,7 +198,7 @@ export class DashboardComponent implements OnInit {
   searchPet(data, data2) {
     if (data && data2) {
       // console.log('Both data is present');
-      return this.httpClient.get('http://localhost:3000/api/pet/get/'+data+'/'+data2.petCategoryId)
+      return this.httpClient.get(this.server+'/api/pet/get/'+data+'/'+data2.petCategoryId)
       .subscribe(
         (data:any[]) => {
           // console.log(data);
@@ -208,8 +210,8 @@ export class DashboardComponent implements OnInit {
     }
     else if (data) {
       // console.log('search is given');
-      // console.log("http://localhost:3000/api/services/searchInput/" + data + "/"+this.userId);
-      return this.httpClient.get("http://localhost:3000/api/pets/searchInput/" + data + "/"+ this.userId)
+      // console.log(this.server+"/api/services/searchInput/" + data + "/"+this.userId);
+      return this.httpClient.get(this.server+"/api/pets/searchInput/" + data + "/"+ this.userId)
         .subscribe(
           (data: any[]) => {
             this.petInfo = data;
@@ -221,7 +223,7 @@ export class DashboardComponent implements OnInit {
     else if (data2) {
       // console.log('category is given');
       // console.log(data2.serviceCategoryId);
-      return this.httpClient.get('http://localhost:3000/api/pet/petCategory/'+ data2.petCategoryId + "/"+this.userId)
+      return this.httpClient.get(this.server+'/api/pet/petCategory/'+ data2.petCategoryId + "/"+this.userId)
       .subscribe(
         (data:any[]) => {
           this.petInfo = data;
@@ -243,7 +245,7 @@ export class DashboardComponent implements OnInit {
 
   getAllPets() {
     // get All Pets
-    this.httpClient.get("http://localhost:3000/api/pet/all/" + this.userId)
+    this.httpClient.get(this.server+"/api/pet/all/" + this.userId)
       .subscribe(
         (data: any[]) => {
           this.petInfo = data;
@@ -254,7 +256,7 @@ export class DashboardComponent implements OnInit {
 
   getPetsByUser() {
     // console.log("here");
-    return this.httpClient.get('http://localhost:3000/api/pet/getByUser/' + this.userId)
+    return this.httpClient.get(this.server+'/api/pet/getByUser/' + this.userId)
       .subscribe(
         (data: any[]) => {
           // console.log(data);
@@ -264,7 +266,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getWishlistItems(value) {
-   return this.httpClient.get("http://localhost:3000/api/wishlist/get/" + value)
+   return this.httpClient.get(this.server+"/api/wishlist/get/" + value)
       .subscribe(
         (data: any[]) => {
           // console.log(data);
@@ -274,7 +276,7 @@ export class DashboardComponent implements OnInit {
   }
 
   removeFromWishlist(value1, value2){
-    return this.httpClient.get('http://localhost:3000/api/wishlist/remove/'+value1+'/'+value2)
+    return this.httpClient.get(this.server+'/api/wishlist/remove/'+value1+'/'+value2)
     .subscribe(
       (data:any[]) => {
         // console.log(data);
@@ -297,7 +299,7 @@ export class DashboardComponent implements OnInit {
 
   addPet(value) {
     // console.log(value);
-    return this.httpClient.post("http://localhost:3000/api/pet/addPet", value)
+    return this.httpClient.post(this.server+"/api/pet/addPet", value)
       .subscribe(
         (data: any[]) => {
           // console.log('from the nodejs', data["insertId"]);
@@ -314,7 +316,7 @@ export class DashboardComponent implements OnInit {
   }
 
   changeEmail() {
-    return this.httpClient.get("http://localhost:3000/api/users/changeEmail/" + this.userId + "/" + this.emailId)
+    return this.httpClient.get(this.server+"/api/users/changeEmail/" + this.userId + "/" + this.emailId)
       .subscribe(
         (data: any[]) => {
           // console.log(data);
@@ -324,7 +326,7 @@ export class DashboardComponent implements OnInit {
   }
 
   changePhoneNo() {
-    return this.httpClient.get("http://localhost:3000/api/users/changePhoneNo/" + this.userId + "/" + this.phoneNo)
+    return this.httpClient.get(this.server+"/api/users/changePhoneNo/" + this.userId + "/" + this.phoneNo)
       .subscribe(
         (data: any[]) => {
           // console.log(data);
@@ -334,7 +336,7 @@ export class DashboardComponent implements OnInit {
   }
 
   changeAddress() {
-    return this.httpClient.get("http://localhost:3000/api/users/changeAddress/" + this.userId + "/" + this.address + "/" + this.city + "/" + this.state + "/" + this.country + "/" + this.zipcode)
+    return this.httpClient.get(this.server+"/api/users/changeAddress/" + this.userId + "/" + this.address + "/" + this.city + "/" + this.state + "/" + this.country + "/" + this.zipcode)
       .subscribe(
         (data: any[]) => {
           // console.log(data);
@@ -349,7 +351,7 @@ export class DashboardComponent implements OnInit {
 
   deactivateUser(value) {
     // console.log(value);
-    return this.httpClient.get("http://localhost:3000/api/users/deactivateUser/" + value)
+    return this.httpClient.get(this.server+"/api/users/deactivateUser/" + value)
       .subscribe(
         (data: any[]) => {
           this.getAllUsers();
@@ -358,7 +360,7 @@ export class DashboardComponent implements OnInit {
 
   activateUser(value) {
     // console.log(value);
-    return this.httpClient.get("http://localhost:3000/api/users/activateUser/" + value)
+    return this.httpClient.get(this.server+"/api/users/activateUser/" + value)
       .subscribe(
         (data: any[]) => {
           this.getAllUsers();

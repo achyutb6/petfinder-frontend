@@ -24,6 +24,7 @@ export class IndexComponent implements OnInit {
   public hashedPassword: any;
   public isAdmin: boolean;
   panelOpenState: boolean = false;
+  public server : string;
   // constructor(private httpClient: HttpClient, private router: Router) { 
     
   registrationForm: FormGroup;
@@ -31,6 +32,7 @@ export class IndexComponent implements OnInit {
 
   constructor(private httpClient: HttpClient, private router: Router, private fb: FormBuilder) { 
     sessionStorage.clear();
+    this.server = "https://petfinder-api-wpl.herokuapp.com";
     this.registrationForm = this.fb.group({
       'registerFullName': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
       'registerEmailId': ['', Validators.compose([Validators.required, Validators.email])],
@@ -57,7 +59,7 @@ export class IndexComponent implements OnInit {
       // check in db for the emailid and password
       this.hashedPassword = Md5.hashStr(this.loginPassword);
       // console.log("User Login with creds -> ", this.loginEmailId, this.hashedPassword);
-      return this.httpClient.get("http://localhost:3000/api/users/login/"+this.loginEmailId+"/"+this.hashedPassword)
+      return this.httpClient.get(this.server+"/api/users/login/"+this.loginEmailId+"/"+this.hashedPassword)
       .subscribe(
         (data:any)=>{
           if(data.length!=0){
@@ -84,14 +86,14 @@ export class IndexComponent implements OnInit {
     this.registerFullName = value.registerFullName;
     this.registerPassword = value.registerPassword;
     // console.log("Register User creds -> ", this.registerEmailId, this.registerFullName, this.registerPassword);
-    return this.httpClient.get("http://localhost:3000/api/users/findUser/"+this.registerEmailId)
+    return this.httpClient.get(this.server+"/api/users/findUser/"+this.registerEmailId)
       .subscribe(
         (data:any[]) => {
           console.log(data.length);
           if(data.length==0){
             // Register the User
             this.hashedPassword = Md5.hashStr(this.registerPassword);
-            return this.httpClient.get("http://localhost:3000/api/users/register/"+this.registerFullName+"/"+this.hashedPassword+"/"+this.registerEmailId)
+            return this.httpClient.get(this.server+"/api/users/register/"+this.registerFullName+"/"+this.hashedPassword+"/"+this.registerEmailId)
             .subscribe(
               (data:any[])=>{
                 console.log(data);

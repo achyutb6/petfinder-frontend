@@ -1,0 +1,73 @@
+<div class="container" style="margin-top: 20px">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <button mat-raised-button color="primary" (click)="goBack()">Go Back</button>
+    </div>
+  </div>
+  <div class="row" style="margin-top: 20px">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+      <img src="{{petImage | slice:16}}" alt="Not Available" class="img-thumbnail">
+    </div>
+    <div class="col-sm-9 col-md-9 col-lg-9" [hidden]="updatableForm">
+      <h3>{{petName}}</h3>
+      <h5>Breed: {{petBreed}}</h5>
+      <h5>Category: {{petCategory}}</h5>
+      <p>Description:</p>
+      <p>{{petDesc}}</p>
+      <button mat-raised-button color="primary" *ngIf="petIsAvailable == 1" (click)="getUserDetails(petUserId)">Contact</button>
+      <button mat-raised-button color="primary" *ngIf="petUserId == userId || isAdmin" (click)="toggleUpdate()">Update Pet</button>
+      <!-- <button mat-raised-button color="primary" *ngIf="userId != petUserId">Hide Pet</button> -->
+      <button mat-raised-button color="primary" *ngIf="userId != petUserId" (click)="addToWishList()">Add to Wishlist</button> <span class="success">{{addWishlistItemMessage}}</span>
+      <button mat-raised-button color="warn" (click)="discontinuePet()" *ngIf="(userId == petUserId || isAdmin) && petIsAvailable==1">Discontinue</button>
+      <button mat-raised-button color="primary" (click)="continuePet()" *ngIf="(userId == petUserId || isAdmin) && petIsAvailable==0">Continue</button>
+    </div>
+    <div class="col-sm-9 col-md-9 col-lg-9" [hidden]="!updatableForm">
+      <!-- <h3> -->
+      <mat-form-field style="width: 100%">
+        <input type="text" matInput placeholder="Name" [(ngModel)]="petName" [ngModelOptions]="{standalone : true}" required>
+      </mat-form-field>
+
+      <!-- </h3> -->
+      <!-- <h5>Breed: -->
+      <mat-form-field>
+        <input type="text" matInput placeholder="Breed" [(ngModel)]="petBreed" [ngModelOptions]="{standalone : true}" required>
+      </mat-form-field>
+
+      <!-- </h5> -->
+      <!-- Category:
+        <mat-form-field>
+          <mat-select>
+            <mat-option *ngFor="let x of petCategories" [value]="x">{{x.petCategoryName}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+      <!-- <p>Description: -->
+      <mat-form-field class="example-full-width">
+        <textarea matInput [(ngModel)]="petDesc" placeholder="Description" [ngModelOptions]="{standalone : true}" required></textarea>
+      </mat-form-field>
+      <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <input type="file" (change)="onFileSelected($event)">
+          </div>
+        </div>
+      <!-- </p> -->
+      <button mat-raised-button color="primary" (click)="updatePet()">Update Pet</button>
+    </div>
+  </div>
+  <div class="row" *ngIf="showContactDetails">
+    <div class="col-sm-3 col-md-3 col-lg-3">
+
+    </div>
+    <div class="col-sm-9 col-md-9 col-lg-9">
+      <h5>Contact Details</h5>
+      <p>
+        Name: {{petUserName}}
+      </p>
+      <p>
+        PhoneNumber: {{petUserPhone}}
+      </p>
+      <p>
+        Email-Id: {{petUserEmail}}
+      </p>
+    </div>
+  </div>
+</div>

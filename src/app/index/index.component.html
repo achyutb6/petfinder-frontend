@@ -1,0 +1,136 @@
+<div class="container" style="margin-top: 20px">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      <h2 class="text-center">Where Pets Find Their People</h2>
+      <p class="text-center"> Thousands of adoptable pets are looking for people. People like you.</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <img class="img-thumbnail" src="https://images.unsplash.com/photo-1522276498395-f4f68f7f8454?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&dl=eric-ward-610868-unsplash.jpg"
+        alt="">
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6">
+      <mat-card>
+      <mat-tab-group>
+        <mat-tab label="Log In">
+          <mat-card>
+        <mat-card-title>Log in</mat-card-title>
+        <form (ngSubmit)="userLogin(loginForm.value)" [formGroup]="loginForm">
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <mat-form-field>
+                <input id="loginEmailId" formControlName="loginEmailId" type="email" matInput placeholder="Email-Id" required>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <div *ngIf="!loginForm.controls['loginEmailId'].valid && (loginForm.controls['loginEmailId'].touched)">
+                <div class="error" [hidden]="!loginForm.controls['loginEmailId'].errors.required">
+                  Email-Id is required &nbsp;
+                </div>
+                <div class="error" [hidden]="!loginForm.controls['loginEmailId'].errors.email">
+                  Not a Valid Email Address
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <mat-form-field>
+                <input id="loginPassword" formControlName="loginPassword" type="password" matInput placeholder="Password" required>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <div *ngIf="!loginForm.controls['loginPassword'].valid && (loginForm.controls['loginPassword'].touched)">
+                <div class="error" [hidden]="!loginForm.controls['loginPassword'].errors.required">
+                  Password is required
+                </div>
+                <div class="error" [hidden]="!loginForm.controls['loginPassword'].errors.minlength">
+                  Minimum 8 Characters
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 col-md-4 col-lg-4">
+              <button type="submit" mat-raised-button color="primary" [disabled]="!loginForm.valid">Log In</button>
+            </div>
+            <div class="col-sm-8 col-md-8 col-lg-8">
+              <div class="text-center error">{{loginMessage}}</div>
+            </div>
+          </div>
+        </form>
+      </mat-card>
+        </mat-tab>
+        <mat-tab label="Sign up">
+          <mat-card>
+        <mat-card-title>Sign up</mat-card-title>
+        <form (ngSubmit)="userRegister(registrationForm.value)" [formGroup]="registrationForm">
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <mat-form-field>
+                <input id="registerFullName" formControlName="registerFullName" type="text" matInput placeholder="Fullname" required>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <div *ngIf="!registrationForm.controls['registerFullName'].valid && (registrationForm.controls['registerFullName'].touched)">
+                <div class="error" [hidden]="!registrationForm.controls['registerFullName'].errors.required">
+                  Full Name is required
+                </div>
+                <div class="error" [hidden]="!registrationForm.controls['registerFullName'].errors.minlength">
+                  Minimum 8 Characters
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <mat-form-field>
+                <input id="registerEmailId" formControlName="registerEmailId" type="email" matInput placeholder="Email-Id" required>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <div *ngIf="!registrationForm.controls['registerEmailId'].valid && (registrationForm.controls['registerEmailId'].touched)">
+                <div class="error" [hidden]="!registrationForm.controls['registerEmailId'].errors.required">
+                  Email-Id is required
+                </div>
+                <div class="error" [hidden]="!registrationForm.controls['registerEmailId'].errors.email">
+                  Not a Valid Email Address
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <mat-form-field>
+                <input id="registerPassword" formControlName="registerPassword" type="password" matInput placeholder="Password" required>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <div *ngIf="!registrationForm.controls['registerPassword'].valid && (registrationForm.controls['registerPassword'].touched)">
+                <div class="error" [hidden]="!registrationForm.controls['registerPassword'].errors.required">
+                  Password is required
+                </div>
+                <div class="error" [hidden]="!registrationForm.controls['registerPassword'].errors.minlength">
+                  Minimum 8 Characters
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <button type="submit" mat-raised-button color="primary" [disabled]="!registrationForm.valid">Create Account</button>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+              <p class="text-center success" *ngIf="registerSuccess">{{registerSuccess}}</p>
+              <p class="text-center error" *ngIf="registerError">{{registerError}}</p>
+            </div>
+          </div>
+        </form>
+      </mat-card>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+    </div>
+  </div>
+</div>

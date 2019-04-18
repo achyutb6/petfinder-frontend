@@ -1,0 +1,53 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main {
+    flex: 1 0 auto;
+}
+.roboto-condensed{
+    font-family: 'Roboto Condensed', sans-serif;
+}
+.roboto {
+    font-family: 'Roboto', sans-serif;
+}
+.russo-one {
+    font-family: 'Russo One', sans-serif;
+    font-size: 30px;
+}
+.pacifico {
+    font-family: 'Pacifico', sans-serif;
+    font-size: 30px;
+}
+.luckiest-guy{
+    font-family: 'Luckiest Guy', cursive;
+}
+.bold-text {
+  font-weight: bold;
+}
+
+.footer{
+    position: absolute;
+    bottom: 0;
+    /* width: 644px;
+    height: 20px; */
+    /* margin: 0 auto; */
+}
+
+.success{
+    color: green;
+}
+
+.error{
+    color: red;
+}
+
+.petImageThumbnail{
+    min-height: 250px;
+    max-height: 250px;
+}

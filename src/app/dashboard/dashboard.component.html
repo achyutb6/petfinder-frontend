@@ -1,0 +1,363 @@
+<mat-tab-group class="demo-tab-group">
+  <mat-tab label="Search">
+    <div class="container demo-tab-content">
+      <br>
+      <form (ngSubmit)="searchPet(searchInput, selectedCategories)">
+        <div class="row">
+          <div class="col-sm-6 col-md-6 col-lg-6">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Search" [(ngModel)]="searchInput" [ngModelOptions]="{standalone:true}">
+            </mat-form-field>
+          </div>
+          <div class="col-sm-4 col-md-4 col-lg-4">
+            <mat-form-field style="width: 100%">
+              <mat-select placeholder="Search by Category" [(ngModel)]="selectedCategories" [ngModelOptions]="{standalone: true}">
+                <mat-option [value]="All">All</mat-option>
+                <mat-option *ngFor="let x of petCategories" [value]="x">{{x.petCategoryName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-sm-2 col-md-2 col-lg-2">
+            <button mat-raised-button type="submit" color="primary">Search</button>
+          </div>
+        </div>
+      </form>
+      <mat-divider></mat-divider>
+      <br>
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <ul *ngIf="pager.pages && pager.pages.length" class="pagination text-center">
+            <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+              <a (click)="setPage(pager.currentPage - 1)" class="page-link">Previous</a>
+            </li>
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page, 'page-item':pager.currentPage === page}">
+              <a (click)="setPage(page)" class="page-link"> {{page}} </a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+              <a (click)="setPage(pager.currentPage + 1)" class="page-link">Next</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6 col-md-3 col-lg-3" *ngFor="let pet of pagedItems" style="margin-top: 10px">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title class="text-center bold-text">{{(pet.petName | slice: 0: 24)+"..."}}</mat-card-title>
+            </mat-card-header>
+            <img class="petImageThumbnail" mat-card-image src="{{pet.petImageName | slice:16}}" alt="Not Available">
+            <!--https://material.angular.io/assets/img/examples/shiba2.jpg-->
+            <mat-card-content>
+              <mat-card-subtitle> {{(pet.petDescription | slice: 0:30) + "..."}}</mat-card-subtitle>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button (click)="openPet(pet.petId)" color="primary">See More</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+      <!-- <ul *ngIf="pager.pages && pager.pages.length" class="pagination center-align ">
+                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a (click)="setPage(1)">First</a>
+                    </li>
+                    <li [ngClass]="{disabled:pager.currentPage === 1}">
+                        <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                    </li>
+                    <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                        <a (click)="setPage(page)"> {{page}} </a>
+                    </li>
+                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                    </li>
+                    <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                        <a (click)="setPage(pager.totalPages)">Last</a>
+                    </li>
+                </ul> -->
+      <div class="row" style="margin-top:20px">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <ul *ngIf="pager.pages && pager.pages.length" class="pagination text-center">
+            <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+              <a (click)="setPage(pager.currentPage - 1)" class="page-link">Previous</a>
+            </li>
+            <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page, 'page-item':pager.currentPage === page}">
+              <a (click)="setPage(page)" class="page-link"> {{page}} </a>
+            </li>
+            <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+              <a (click)="setPage(pager.currentPage + 1)" class="page-link">Next</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="My Posts">
+    <div class="container demo-tab-content">
+      <br>
+      <h4>My Posts</h4>
+      <mat-divider></mat-divider>
+      <br>
+      <div class="row">
+        <div class="col-sm-6 col-md-3 col-lg-3" *ngFor="let x of userPets" style="margin-top: 10px">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title class="text-center bold-text">{{(x.petName | slice:0:24)+"..."}}</mat-card-title>
+            </mat-card-header>
+            <img class="petImageThumbnail" mat-card-image src="{{x.petImageName | slice: 16}}" alt="Not Available">
+            <mat-card-content>
+              <mat-card-subtitle> {{(x.petDescription | slice: 0:30) + "..."}}</mat-card-subtitle>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-raised-button (click)="openPet(x.petId)" color="primary">See More</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Add a pet" *ngIf="!isActive==false">
+    <div class="container demo-tab-content">
+      <br>
+      <h4>Add a pet </h4>
+      <mat-divider></mat-divider>
+      <br>
+      <form (ngSubmit)="addPet(addPetForm.value)" [formGroup]="addPetForm">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <mat-form-field style="width: 100%">
+              <input type="text" matInput placeholder="Name" required formControlName="addPetName">
+            </mat-form-field>
+            <div *ngIf="!addPetForm.controls['addPetName'].valid && (addPetForm.controls['addPetName'].touched)">
+              <div class="error" [hidden]="!addPetForm.controls['addPetName'].errors.required">
+                Name is required
+              </div>
+              <div class="error" [hidden]="!addPetForm.controls['addPetName'].errors.minlength">
+                Minimum 8 Characters
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 col-md-6 col-lg-6">
+            <mat-form-field style="width: 50%">
+              <mat-select placeholder="Select Category" formControlName="addPetCategory">
+                <mat-option *ngFor="let x of petCategories" [value]="x">{{x.petCategoryName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngIf="!addPetForm.controls['addPetCategory'].valid && (addPetForm.controls['addPetCategory'].touched)">
+              <div class="error" [hidden]="!addPetForm.controls['addPetCategory'].errors.required">
+                Category is required
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-6 col-lg-6">
+            <mat-form-field style="width: 50%">
+              <input type="text" matInput placeholder="Breed" required formControlName="addPetBreed">
+            </mat-form-field>
+            <div *ngIf="!addPetForm.controls['addPetBreed'].valid && (addPetForm.controls['addPetBreed'].touched)">
+              <div class="error" [hidden]="!addPetForm.controls['addPetBreed'].errors.required">
+                Breed is required
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <mat-form-field style="width: 100%">
+              <textarea matInput placeholder="Description" required formControlName="addPetDesc"></textarea>
+            </mat-form-field>
+            <div *ngIf="!addPetForm.controls['addPetDesc'].valid && (addPetForm.controls['addPetDesc'].touched)">
+              <div class="error" [hidden]="!addPetForm.controls['addPetDesc'].errors.required">
+                Description is required
+              </div>
+              <div class="error" [hidden]="!addPetForm.controls['addPetDesc'].errors.minlength">
+                Minimum 8 Characters
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <input type="file" (change)="onFileSelected($event)">
+          </div>
+        </div>
+        <div class="row" style="margin-top: 10px">
+          <div class="col-sm-12 colmd-12 col-lg-12">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!addPetForm.valid">Submit</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+              <p class="success">{{addPetMessage}}</p>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-tab>
+  <mat-tab label="Wishlist">
+    <div class="container demo-tab-content">
+      <br>
+      <h4>Wishlist Items</h4>
+      <mat-divider></mat-divider>
+      <br>
+      <div class="row">
+          <div class="col-sm-6 col-md-3 col-lg-3" *ngFor="let x of wishlistitems">
+            <mat-card>
+              <mat-card-header>
+                <mat-card-title class="text-center bold-text">{{(x.petName | slice:0:24)+"..."}}</mat-card-title>
+              </mat-card-header>
+              <img class="petImageThumbnail" mat-card-image src="{{x.petImageName | slice: 16}}" alt="Image not available">
+              <mat-card-content>
+                <mat-card-subtitle> {{(x.petDescription | slice: 0:30) + "..."}}</mat-card-subtitle>
+              </mat-card-content>
+              <mat-card-actions>
+                <button mat-raised-button (click)="openPet(x.petId)" color="primary">See More</button>
+                <button mat-raised-button (click)="removeFromWishlist(x.petId, userId)" color="primary">Remove</button>
+              </mat-card-actions>
+            </mat-card>
+            <br>
+          </div>
+        </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Profile">
+    <div class="container demo-tab-content">
+      <br>
+      <div class="row">
+        <div *ngIf="!isAdmin" class="col-sm-8">
+          <h2>Hello {{fullName}} !</h2>
+        </div>
+        <div *ngIf="isAdmin" class="col-sm-8">
+          <h2>Hello Admin !</h2>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
+          <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <br>
+      <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6">
+          <mat-card>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <span class="bold-text">Address:</span> {{address}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <span class="bold-text">Zipcode:</span> {{zipcode}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <span class="bold-text">City:</span> {{city}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <span class="bold-text">State:</span> {{state}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <span class="bold-text">Country:</span> {{country}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <span class="bold-text">Phone-No:</span> {{phoneNo}}</div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-12 col-lg-12">
+                <span class="bold-text">Email-Id:</span> {{emailId}}</div>
+            </div>
+          </mat-card>
+        </div>
+        <div class="col-sm-6">
+          <mat-accordion>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Change Email
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <form (ngSubmit)="changeEmail()">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <mat-form-field>
+                      <input matInput placeholder="Email-Id" [(ngModel)]="emailId" [ngModelOptions]="{standalone:true}" type="text">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <button type="submit" mat-raised-button color="primary">Change</button>
+                  </div>
+                </div>
+              </form>
+              <div *ngIf="emailIdChangedMessage" class="success">{{emailIdChangedMessage}}</div>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Change Phone
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <form (ngSubmit)="changePhoneNo()">
+                <div class="row">
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <mat-form-field>
+                      <input type="text" matInput placeholder="Phone-No" [(ngModel)]="phoneNo" [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-6 col-lg-6">
+                    <button type="submit" mat-raised-button color="primary">Change</button>
+                  </div>
+                </div>
+              </form>
+              <div *ngIf="phoneNoChangedMessage" class="success">{{phoneNoChangedMessage}}</div>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Change Address
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <form (ngSubmit)="changeAddress()">
+                <div class="row">
+                  <div class="col-sm-12 col-md-9 col-lg-9">
+                    <mat-form-field style="width: 100%">
+                      <input id="address" [(ngModel)]="address" [ngModelOptions]="{standalone:true}" type="text" matInput placeholder="Address">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-3 col-lg-3">
+                    <mat-form-field style="width: 100%">
+                      <input id="zipcode" [(ngModel)]="zipcode" [ngModelOptions]="{standalone:true}" type="text" matInput placeholder="Zipcode">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-md-4 col-lg-4">
+                    <mat-form-field style="width: 100%">
+                      <input id="city" [(ngModel)]="city" [ngModelOptions]="{standalone:true}" type="text" matInput placeholder="City">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-4 col-lg-4">
+                    <mat-form-field style="width: 100%">
+                      <input id="state" [(ngModel)]="state" [ngModelOptions]="{standalone:true}" type="text" matInput placeholder="State">
+                    </mat-form-field>
+                  </div>
+                  <div class="col-sm-12 col-md-4 col-lg-4">
+                    <mat-form-field style="width: 100%">
+                      <input id="country" [(ngModel)]="country" [ngModelOptions]="{standalone:true}" type="text" matInput placeholder="Country">
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-md-12 col-lg-12">
+                    <button type="submit" mat-raised-button color="primary">Change</button>
+                  </div>
+                </div>
+              </form>
+              <div *ngIf="addressChangedMessage" class="success">{{addressChangedMessage}}</div>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>

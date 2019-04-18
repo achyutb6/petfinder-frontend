@@ -9,7 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-postbuild": "ng build --prod"
+    "heroku-postbuild": "ng build --aot -prod"
   },
   "engines": {
     "node": "10.15.3",
@@ -17,6 +17,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/cli": "^7.3.8",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/animations": "^5.2.10",
     "@angular/cdk": "^5.2.5",
@@ -43,9 +44,7 @@
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "@angular/cli": "^7.3.8",
     "@angular-devkit/build-angular":"0.13.8",
-    "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",

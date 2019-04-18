@@ -12,7 +12,7 @@
           <div class="col-sm-4 col-md-4 col-lg-4">
             <mat-form-field style="width: 100%">
               <mat-select placeholder="Search by Category" [(ngModel)]="selectedCategories" [ngModelOptions]="{standalone: true}">
-                <mat-option [value]="All">All</mat-option>
+                <mat-option>All</mat-option>
                 <mat-option *ngFor="let x of petCategories" [value]="x">{{x.petCategoryName}}</mat-option>
               </mat-select>
             </mat-form-field>

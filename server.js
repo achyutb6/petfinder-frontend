@@ -3,11 +3,11 @@ const express = require('express');
 const app = express();
 
 // Serve static files
-app.use(express.static(__dirname + '/dist/petfinder'));
+app.use(express.static(__dirname + '/dist'));
 
 // Send all requests to index.html
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/dist/petfinder/index.html'));
+  res.sendFile(path.join(__dirname + '/dist/index.html'));
 });
 
 // default Heroku port

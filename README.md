@@ -1,4 +1,15 @@
 # Petfinder
+Petfinder is a consumer to consumer website where a user having an account can post
+about their pets(dogs/cats) which are up for adoption. User can post
+information/description about their pets and select the category of pet along with
+uploading images related to the service. Interested registered users can directly contact
+the owner of the pet by viewing the contact details.
+Registered users can add desired pets to their Wishlist and even remove them from
+Wishlist if they want. A user can discontinue the posting of his/her pet provided at any
+time he wishes so the pet does not appear in search results of other users.
+
+Admin user has the same interface like regular users, except that he/she will be
+provided extra features for update and discontinue a post related to pets.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 

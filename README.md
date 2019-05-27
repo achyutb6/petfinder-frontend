@@ -1,3 +1,4 @@
+[![Analytics](https://ga-beacon.appspot.com/UA-61308316-6/petfinder-frontend/readme)](https://github.com/igrigorik/ga-beacon)
 # Petfinder
 Petfinder is a consumer to consumer website where a user having an account can post
 about their pets(dogs/cats) which are up for adoption. User can post
